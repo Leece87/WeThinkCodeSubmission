@@ -1,98 +1,113 @@
-```
-Task Manager Code Documentation Exercise
+```id="p8w2md"
+Code Documentation Exercise
 
-Original Code
+1. Original Code
 
-def init(self, title, description="", priority=TaskPriority.MEDIUM, due_date=None, tags=None):
- self.id = str(uuid.uuid4())
- self.title = title
- self.description = description
- self.priority = priority
- self.status = TaskStatus.TODO
- self.created_at = datetime.now()
- self.updated_at = self.created_at
- self.due_date = due_date
- self.completed_at = None
- self.tags = tags or []
+def parse_task_from_text(text):
+ """
+ Parse free-form text to extract task properties.
+ """
+ # (function body unchanged)
 
-Documentation Generated Using Prompt 1 (Comprehensive Function Documentation)
+2. Documentation (Prompt 1)
 
-This constructor initializes a new Task object with all required attributes used by the Task Manager system.
+def parse_task_from_text(text):
+ """
+ Parse a free-form task description into a structured Task object.
 
-Description:
-The function creates a new task and assigns it a unique identifier using UUID. It stores the task title, description, priority, and optional due date. When a task is created, its status is automatically set to TODO. The constructor also records timestamps for when the task was created and last updated. If no tags are provided, an empty list is initialized.
+ This function extracts task metadata such as title, priority, tags,
+ and due date from a loosely formatted string using inline markers.
 
-Parameters:
-- title (str): The name of the task.
-- description (str, optional): Detailed explanation. Default is empty.
-- priority (TaskPriority, optional): LOW, MEDIUM, HIGH. Default is MEDIUM.
-- due_date (datetime, optional): Task deadline. Default is None.
-- tags (list, optional): Labels for categorization. Defaults to empty list.
+ Supported markers:
+ - "@tag" for tags
+ - "!value" for priority (numeric or named)
+ - "#value" for due dates
 
-Return Value:
-No return value. Initializes a Task object.
+ Parameters:
+  text (str): Input string containing task details.
 
-Possible Errors:
-Type errors if incorrect data types are passed.
+ Returns:
+  Task: Object containing:
+   - title (str)
+   - priority (TaskPriority)
+   - due_date (datetime or None)
+   - tags (list)
 
-Example Usage:
-task = Task(
- title="Finish assignment",
- description="Complete documentation",
- priority=TaskPriority.HIGH,
- tags=["school", "python"]
-)
+ Raises:
+  NameError, AttributeError if dependencies are missing.
 
-Notes:
-"tags or []" ensures a new list is created if tags is None.
+ Example:
+  parse_task_from_text("Buy milk @shopping !2 #tomorrow")
 
-Insights Using Prompt 2 (Intent and Logic Explanation)
+ Notes:
+  - First priority is used
+  - First valid date is used
+  - Invalid dates are ignored
+  - Tags are not deduplicated
+ """
 
-High-Level Purpose:
-Initializes a Task object with identifiers, metadata, and timestamps.
+3. Insights & Improvements (Prompt 2)
 
-Step-by-Step Logic:
-- Generate a unique ID using UUID.
-- Store title and description.
-- Assign priority (default MEDIUM).
-- Set status to TODO.
-- Record creation time.
-- Set updated_at equal to created_at.
-- Store optional due date.
-- Set completed_at to None.
-- Ensure tags is always a list.
+Key Insights:
+- Acts as a simple parser for task input
+- Uses flexible, user-friendly syntax
+- Parsing order: priority → tags → dates
 
-Assumptions and Edge Cases:
-- Title should be a non-empty string.
-- Tags should be a list of strings.
-- due_date should be a valid datetime.
-- "tags or []" prevents mutable default issues.
+Assumptions / Edge Cases:
+- Markers require leading space
+- Only first priority/date used
+- Tags limited to alphanumeric
+- Invalid dates ignored
+- Title may become empty
+- Duplicate tags allowed
 
-Suggested Inline Comments:
-- Generate unique ID
-- Store task data
-- Set priority and status
-- Record timestamps
-- Store due date
-- Initialize completion state
-- Ensure tags list
+Suggested Improvements:
+- Allow markers without leading space
+- Remove duplicate tags
+- Use safer regex (re.escape)
+- Split logic into helper functions
+- Handle empty titles
+- Optimize repeated regex usage
 
-Possible Improvements:
-- Validate title is not empty
-- Validate tag types
-- Validate due_date type
-- Add limits to title/description length
+4. Final Combined Documentation Version
 
-Final Combined Documentation Version
+def parse_task_from_text(text):
+ """
+ Parse a free-form task string into a structured Task object.
 
-This constructor creates and initializes a Task object. Each task has a unique ID and includes title, description, priority, due date, and tags.
+ This function reads inline markers from a task string and extracts
+ structured data including title, priority, tags, and due date.
 
-New tasks are set to TODO status. The created_at timestamp is recorded, updated_at is initialized to the same value, and completed_at is None until completion.
+ Supported markers:
+  @tag        → Tag
+  !1–!4       → Priority levels
+  !low/high   → Named priority
+  #date       → Due date
 
-Tags are always stored as a list. If none are provided, an empty list is created to avoid shared mutable defaults.
+ Behavior:
+  - Remaining text becomes title
+  - First priority is used
+  - First valid date is used
+  - Multiple tags supported
 
-Example:
-task = Task("Write documentation", tags=["coding", "python"])
+ Parameters:
+  text (str): Task input string.
 
-The object can then be managed for updates, completion tracking, and storage.
+ Returns:
+  Task: Object with extracted properties.
+
+ Example:
+  task = parse_task_from_text("Finish report !urgent @work #friday")
+
+ Notes:
+  - Markers require whitespace prefix
+  - Tags are alphanumeric only
+  - Invalid dates ignored
+  - Title may be empty
+
+ Limitations:
+  - No complex tag formats
+  - No validation of conflicting inputs
+  - Duplicate tags not removed
+ """
 ```
