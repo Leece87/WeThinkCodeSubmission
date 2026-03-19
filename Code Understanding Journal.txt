@@ -1,0 +1,55 @@
+Task Manager Codebase Exploration Summary
+
+Initial vs Final Understanding of the Codebase
+
+When I first explored the Task Manager project, my understanding of the codebase was limited. Based on the directory structure and file names, I initially assumed that the project followed a Model–View–Controller (MVC) architecture because this pattern is commonly used in many applications. I also expected the project to use a Python framework such as Flask or Django, since these frameworks are often used when building Python applications.
+
+However, after examining the project structure and applying AI prompts to validate my assumptions, I discovered that the application actually follows a layered architecture rather than MVC. The project is a Command-Line Interface (CLI) application written in Python and intentionally avoids external frameworks. Instead, it relies entirely on Python’s standard library, which keeps the project simple and easy to understand.
+
+The architecture consists of four main layers:
+- Interface Layer: Handles command-line interactions with the user.
+- Application/Service Layer: Contains the business logic that manages tasks.
+- Domain Layer: Defines the core task entities and related data structures.
+- Persistence Layer: Handles storing and retrieving tasks using a JSON file.
+
+The main entry point of the application is cli.py, which parses user commands using Python’s argparse module and calls the relevant task management functions.
+
+Key components in the project include:
+- cli.py: Manages command-line interaction and routes commands to the task logic.
+- task_manager.py: Implements the core business logic such as creating, updating, and listing tasks.
+- models.py: Defines the domain entities, including Task, TaskStatus, and TaskPriority.
+- storage.py: Handles reading and writing task data to a JSON file.
+- tests/: Contains unit tests implemented using Python’s unittest framework.
+
+Through this exploration, I gained a clearer understanding of how the application is structured and how responsibilities are separated across different layers.
+
+Insights Gained from the AI Prompts
+
+The Project Structure prompt was useful for validating my assumptions and identifying misconceptions about the architecture and technologies used. It helped clarify the layered architecture and highlighted the application’s entry points and core components.
+
+The Feature Location prompt helped me systematically investigate where a new feature should be implemented. By searching for keywords such as export, save, and dict, I identified the files most likely involved in implementing a Task Export to CSV feature.
+
+From this analysis, I concluded that the feature would likely involve:
+- cli.py: Adding a new command to trigger task export.
+- task_manager.py: Implementing logic to retrieve and prepare tasks for export.
+- storage.py: Handling the writing of task data to a CSV file.
+- models.py: Providing the task data structure.
+- tests/test_task_manager.py: Adding tests to verify the functionality.
+
+The Domain Model prompt helped clarify the core business concepts represented in the system. The primary domain entity is the Task, which includes attributes such as description, due date, priority, and status. Supporting enumerations such as TaskStatus and TaskPriority define the state and importance of tasks. Understanding these domain concepts helped connect the code implementation with the actual functionality of the task management system.
+
+Approach to Implementing the New Business Rule
+
+The new business rule requires that tasks overdue for more than seven days should automatically be marked as abandoned unless they are high priority.
+
+Based on the architecture of the system, the implementation would mainly occur in task_manager.py, since it contains the core business logic. The system would need to identify tasks whose due date has passed by more than seven days and check their priority level. If the task is not marked as high priority, its status would be updated to abandoned.
+
+The models.py file may require updates to include an additional task status if the abandoned status does not already exist. The storage.py file would ensure that the updated status is persisted in the JSON file, while tests/test_task_manager.py would need additional tests to confirm that the rule works correctly and does not affect high-priority tasks.
+
+Before implementing the rule, I would clarify several points with the team, such as whether the rule should run automatically when tasks are loaded, whether abandoned tasks should still appear in task lists, and whether users should be able to restore abandoned tasks.
+
+Reflection and Future Strategy
+
+This exercise demonstrated how structured AI prompts can help developers quickly understand unfamiliar codebases. The prompts helped validate assumptions, guide exploration of the code structure, and clarify the domain concepts represented in the application.
+
+In the future, when approaching an unfamiliar project, I would first analyze the project structure, identify entry points, and focus on the specific feature or functionality being implemented rather than attempting to understand the entire system at once. Combining structured prompts with code exploration and targeted questions for team members can significantly improve the efficiency of understanding and working with existing codebases.
