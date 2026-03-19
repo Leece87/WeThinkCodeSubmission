@@ -1,0 +1,203 @@
+TASK MANAGER - FREQUENTLY ASKED QUESTIONS
+
+GETTING STARTED
+
+Q: What is Task Manager?
+A: Task Manager is a command-line tool for creating, tracking, and organizing tasks. It stores tasks persistently in JSON format and supports priorities, due dates, status workflows, and tags.
+
+Q: Do I need any special software to use Task Manager?
+A: Only Python 3.7+ and access to a command-line terminal. No additional installations required for basic use.
+
+Q: How do I start using Task Manager?
+A: Navigate to project directory and run "python cli.py --help" to see commands. Start with "python cli.py create" to add your first task.
+
+Q: Where are my tasks stored?
+A: All tasks are stored in tasks.json file in the project directory. This is a regular text file you can backup easily.
+
+Q: Can I use Task Manager on Windows, Mac, and Linux?
+A: Yes. Task Manager works on any system with Python installed, regardless of operating system.
+
+BASIC USAGE
+
+Q: How do I create a task?
+A: Use "python cli.py create "Task title"" for quick creation, or add details with -d for description, -p for priority, -u for due date, and -t for tags.
+
+Q: What do the priority numbers mean?
+A: 1=LOW (not urgent), 2=MEDIUM (normal, default), 3=HIGH (important), 4=URGENT (critical).
+
+Q: How should I format dates?
+A: Always use YYYY-MM-DD format. Example: 2024-12-25 for December 25, 2024.
+
+Q: Can I create a task without a due date?
+A: Yes. Tasks are completely optional for due date. Leave it out if not needed.
+
+Q: What does each status mean?
+A: TODO=not started, IN_PROGRESS=actively working, REVIEW=waiting for feedback, DONE=completed.
+
+Q: How do I view all my tasks?
+A: Run "python cli.py list" to show all tasks with status symbols and details.
+
+Q: Can I see only certain tasks?
+A: Yes. Use "list -s todo" for status filter, "list -p 3" for priority filter, or "list -o" for overdue only.
+
+TASK MANAGEMENT
+
+Q: How do I mark a task as done?
+A: Use "python cli.py status <task_id> done". Completion timestamp records automatically.
+
+Q: Can I change a task's priority after creating it?
+A: Yes. Use "python cli.py priority <task_id> <number>" with 1-4 value to change priority.
+
+Q: Can I change a task's due date?
+A: Yes. Use "python cli.py due <task_id> YYYY-MM-DD" to update deadline.
+
+Q: What are tags used for?
+A: Tags categorize tasks for organization. Add with "python cli.py tag <id> <tag_name>", remove with "untag" command.
+
+Q: Can one task have multiple tags?
+A: Yes, but they must be added individually. Each "tag" command adds one tag.
+
+Q: How do I edit a task's description?
+A: Task Manager doesn't have direct edit for description. Delete the task and recreate with new details, or modify tasks.json directly.
+
+Q: Can I delete a task?
+A: Yes. Use "python cli.py delete <task_id>" to permanently remove task.
+
+Q: How do I delete all completed tasks?
+A: No bulk delete feature. Delete completed tasks individually using their IDs.
+
+TASK IDs AND IDENTIFICATION
+
+Q: What's a task ID?
+A: A unique identifier for each task. First 8 characters shown in task list, full UUID used internally.
+
+Q: How do I get a task's full ID?
+A: Run "python cli.py show <partial_id>" to view complete information including full UUID.
+
+Q: Can I change a task's ID?
+A: No. IDs are auto-generated and permanent. Task Manager uses UUID format for uniqueness.
+
+Q: Can I reference tasks by name instead of ID?
+A: No. Must use task ID. Note the ID when creating or viewing task list.
+
+OVERDUE TASKS
+
+Q: How does Task Manager detect overdue tasks?
+A: Any incomplete task with due date in the past is marked overdue. Completed tasks can't be overdue.
+
+Q: How do I find overdue tasks?
+A: Run "python cli.py list -o" to display all overdue incomplete tasks.
+
+Q: What if I need to reschedule an overdue task?
+A: Use "python cli.py due <task_id> <new_date>" to update the due date to a future date.
+
+Q: Are overdue tasks marked differently?
+A: Yes. When viewing task details, overdue status is calculated and accessible through the Task.is_overdue() method.
+
+STATISTICS AND REPORTING
+
+Q: What does "stats" show?
+A: Task statistics include: total task count, breakdown by status, and breakdown by priority level.
+
+Q: How do I generate statistics?
+A: Run "python cli.py stats" to display current task statistics.
+
+Q: Can I export task statistics?
+A: Not directly through CLI. You can export tasks.json and parse manually, or modify code for custom reports.
+
+Q: Can I see historical task data?
+A: Task Manager keeps creation timestamp and update timestamp for each task. Query tasks.json for historical analysis.
+
+DATA STORAGE AND BACKUP
+
+Q: Can I backup my tasks?
+A: Yes. Simply copy tasks.json file to another location. It's a standard JSON text file.
+
+Q: Can I restore from backup?
+A: Yes. Replace current tasks.json with backup copy and restart Task Manager.
+
+Q: What if tasks.json gets corrupted?
+A: Delete tasks.json and start fresh. Or use backup if available. No data recovery beyond backups possible.
+
+Q: Can I edit tasks.json directly?
+A: Technically yes, but not recommended without understanding JSON structure. Errors can break the application.
+
+Q: How large can tasks.json get?
+A: No built-in limit. Performance depends on system. Thousands of tasks should work fine.
+
+FILTERING AND SEARCHING
+
+Q: Can I filter by multiple criteria at once?
+A: No. Filters work individually: -s for status, -p for priority, -o for overdue. Run separate commands for different filters.
+
+Q: Can I search by tag?
+A: No direct search. Use "list" to view all, then manually find tagged tasks. Consider using system grep/find tools.
+
+Q: Can I search for tasks by title?
+A: No built-in search. List all tasks and visually locate. Consider adding grep filter: "python cli.py list | grep keyword"
+
+Q: Can I filter by date range?
+A: No. View all tasks with list, then identify by due date shown in output.
+
+ADVANCED USAGE
+
+Q: Can I integrate Task Manager with other tools?
+A: Task Manager is standalone. You could write custom scripts to parse tasks.json and integrate with other systems.
+
+Q: Can I access Task Manager from multiple locations?
+A: Yes. Copy entire project folder to different locations. Each location maintains separate tasks.json.
+
+Q: Can I sync tasks across computers?
+A: No built-in sync. Manually copy tasks.json between locations, or use external cloud storage.
+
+Q: Can I set recurring tasks?
+A: No. Create individual tasks instead. You could manually recreate recurring items.
+
+TROUBLESHOOTING
+
+Q: Command shows "module not found" error.
+A: Verify you're running from correct directory. Check Python path includes project folder.
+
+Q: Task creation returns no ID.
+A: Likely invalid input (date format wrong, priority not 1-4). Check error message and retry.
+
+Q: Changes don't save.
+A: Close command line without interrupting and check tasks.json was created. Verify directory permissions allow file creation.
+
+Q: Task list shows empty even after creating tasks.
+A: Verify tasks.json exists in project directory. Check that list command completed without errors.
+
+Q: "Task ID not found" when trying to update.
+A: Copy exact task ID from list output. Ensure you're using correct partial or full ID.
+
+Q: Date format error on valid-looking date.
+A: Confirm using YYYY-MM-DD format exactly. Double-check for extra spaces or characters.
+
+Q: Priority command doesn't work.
+A: Verify using numbers 1-4 only. Check for typos in task ID.
+
+Q: Status command rejects valid status.
+A: Use lowercase only: "todo", "in_progress", "review", "done". Check spelling exactly.
+
+PERFORMANCE AND LIMITATIONS
+
+Q: How many tasks can Task Manager handle?
+A: No hard limit. Tested with thousands. Performance depends on system resources.
+
+Q: Is Task Manager suitable for team use?
+A: Single-user by design. Each installation maintains its own tasks.json. No built-in collaboration.
+
+Q: Can I run multiple Task Manager instances?
+A: Yes, but each maintains separate task files. Not recommended for same teams without proper file management.
+
+Q: What happens if I corrupt tasks.json?
+A: Application will report load error. Delete file and start over, or restore from backup.
+
+FURTHER INFORMATION
+
+For additional help:
+- View command syntax: python cli.py [command] --help
+- Check tasks.json format for data structure
+- Review models.py for task data design
+- Examine test files for usage examples
+- Refer to README.txt for project overview

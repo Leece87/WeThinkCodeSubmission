@@ -1,0 +1,193 @@
+HOW TO CREATE AND MANAGE TASKS IN TASK MANAGER
+
+Step-by-Step Guide | User Level: Beginner
+
+This guide walks you through creating, updating, and organizing tasks using Task Manager.
+
+PREREQUISITES
+- Python 3.7+ installed
+- Task Manager project files downloaded
+- Command-line/terminal access
+- Understanding of basic CLI commands
+
+SECTION 1: CREATE YOUR FIRST TASK
+
+Step 1: Open Terminal/Command Prompt
+Navigate to the Task Manager directory where cli.py is located.
+
+Step 2: Create Basic Task
+Execute:
+  python cli.py create "Complete project documentation"
+
+Result: Task created with default priority (MEDIUM) and TODO status.
+Console output: "Created task with ID: [unique-id]"
+Note: Save this ID for later reference.
+
+Step 3: Add Task Description
+For tasks with more detail, create with description:
+  python cli.py create "Review code changes" -d "Review pull request #42 and provide feedback"
+
+Step 4: Set Priority
+Assign priority level (1=LOW to 4=URGENT):
+  python cli.py create "Fix critical bug" -p 4 -d "Login page authentication broken"
+
+Result: Task marked as URGENT priority.
+
+Step 5: Define Due Date
+Add deadline in YYYY-MM-DD format:
+  python cli.py create "Q1 report" -d "Generate quarterly summary" -u 2024-03-31
+
+Step 6: Assign Tags
+Categorize with comma-separated tags:
+  python cli.py create "Setup development" -t "setup,infrastructure,python" -p 2
+
+Result: Task tagged for easy filtering.
+
+SECTION 2: VIEW YOUR TASKS
+
+Step 1: List All Tasks
+Display entire task list:
+  python cli.py list
+
+Output shows: Status symbol, task ID (8 chars), priority, title, description, due date, tags, creation time.
+
+Step 2: Filter by Status
+View tasks in specific workflow state:
+  python cli.py list -s todo           # For new unstarted tasks
+  python cli.py list -s in_progress    # Currently being worked on
+  python cli.py list -s review         # Awaiting review
+  python cli.py list -s done           # Completed tasks
+
+Step 3: Filter by Priority
+Show tasks at specific urgency:
+  python cli.py list -p 4              # Only URGENT tasks
+  python cli.py list -p 3              # Only HIGH priority items
+
+Step 4: Check Overdue Tasks
+Identify missed deadlines:
+  python cli.py list -o
+
+Displays: All incomplete tasks past their due date.
+
+Step 5: View Full Task Details
+Get complete information:
+  python cli.py show a1b2c3d4          # Replace with actual task ID
+
+Shows: Full UUID, all metadata, timestamps, complete tag list.
+
+SECTION 3: UPDATE TASK STATUS
+
+Step 1: Move Task to In Progress
+When starting work:
+  python cli.py status a1b2c3d4 in_progress
+
+Step 2: Submit for Review
+When work is complete:
+  python cli.py status a1b2c3d4 review
+
+Step 3: Mark as Done
+Confirm task completion:
+  python cli.py status a1b2c3d4 done
+
+Automatic action: Completion timestamp recorded automatically.
+
+Return to TODO Status: If needed, use "python cli.py status <id> todo"
+
+SECTION 4: ADJUST TASK PROPERTIES
+
+Step 1: Change Priority
+Escalate or reduce urgency:
+  python cli.py priority a1b2c3d4 4    # Escalate to URGENT
+
+Step 2: Update Due Date
+Modify deadline:
+  python cli.py due a1b2c3d4 2024-04-15
+
+Step 3: Add Tags
+Organize by category:
+  python cli.py tag a1b2c3d4 backend
+
+Step 4: Remove Tags
+Clean up categorization:
+  python cli.py untag a1b2c3d4 backend
+
+SECTION 5: MANAGE TASKS
+
+Step 1: Delete Completed Task
+Remove finished task:
+  python cli.py delete a1b2c3d4
+
+Confirmation: Task removed from system and storage.
+
+Step 2: View Statistics
+Get overview of workload:
+  python cli.py stats
+
+Shows: Total count, breakdown by status, breakdown by priority.
+
+WORKFLOW EXAMPLE - TYPICAL DAY
+
+Morning:
+1. Check new tasks: python cli.py list -s todo
+2. Check overdue: python cli.py list -o
+3. Review urgent items: python cli.py list -p 4
+
+During Day:
+4. Create new task: python cli.py create "Fix navbar styling" -p 3 -u 2024-03-20
+5. Mark task started: python cli.py status xyz in_progress
+6. Add relevant tag: python cli.py tag xyz frontend
+
+Afternoon:
+7. Check in-progress work: python cli.py list -s in_progress
+8. Move to review: python cli.py status xyz review
+9. Check review queue: python cli.py list -s review
+
+End of Day:
+10. Complete finished tasks: python cli.py status xyz done
+11. Run stats: python cli.py stats
+12. View remaining: python cli.py list -s todo
+
+COMMON ISSUES & SOLUTIONS
+
+Issue: "Invalid date format" Error
+- Check date uses YYYY-MM-DD format exactly
+- Example correct format: 2024-03-31
+- Example wrong format: 3/31/24 or 31-03-2024
+Solution: Rerun command with corrected date.
+
+Issue: Task ID Not Found
+- Task IDs shown in list are first 8 characters only
+- Full UUID stored internally
+- Check you're copying ID exactly as shown
+Solution: Run "list" again and verify ID, then retry.
+
+Issue: Priority Mismatch
+- Only values 1-4 accepted
+- 1=LOW, 2=MEDIUM, 3=HIGH, 4=URGENT
+Solution: Use correct numeric value.
+
+Issue: Status Not Recognized
+- Valid statuses: todo, in_progress, review, done
+- Use lowercase only
+Solution: Check spelling against valid list.
+
+Issue: Tags Not Appearing
+- Tags must be added individually after task creation
+- Tags don't auto-add from creation command
+Solution: Use "tag" command to add tags after creating task.
+
+TIPS FOR EFFECTIVE TASK MANAGEMENT
+
+- Use consistent tag naming for filtering
+- Set due dates for accountability
+- Review overdue list daily
+- Update status regularly for accurate tracking
+- Use URGENT priority sparingly for true emergencies
+- Archive (delete) old completed tasks to reduce clutter
+- Check statistics weekly for workload patterns
+
+NEXT STEPS
+- Combine filters for advanced searches
+- Use tags to group related tasks across projects
+- Monitor statistics to identify bottlenecks
+- Develop team tagging conventions if collaborative
