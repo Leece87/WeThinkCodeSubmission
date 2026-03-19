@@ -1,0 +1,194 @@
+```id="x7k29p"
+API Endpoint Documentation Exercise
+
+ORIGINAL API ENDPOINT CODE
+
+Router Endpoint
+router.post("/", authorize(['educator', 'moderator', 'admin']), upload.array("files"), uploadFiles);
+
+Controller Function
+const uploadFiles = async (req, res) => {
+ // Handles file upload, conversion, preview generation,
+ // cloud upload, and database insertion
+};
+
+PROMPT 1 – COMPREHENSIVE ENDPOINT DOCUMENTATION
+
+Endpoint
+POST /api/upload
+
+Description
+This endpoint allows authorized users to upload academic documents. Files such as Word, Excel, PowerPoint, images, or PDF are accepted. The system converts files to PDF, merges a licensing page, generates previews, uploads to cloud storage, and saves metadata in the database. Uploaded documents are marked as "pending" for moderation.
+
+Authentication
+Requires JWT authentication.
+Header:
+Authorization: Bearer <JWT_TOKEN>
+
+Allowed Roles:
+- educator
+- moderator
+- admin
+
+Request Parameters
+Content-Type: multipart/form-data
+
+Body Parameters:
+- files (File Array, required): Files to upload
+- title (String, required): Document title
+- module (String, required): Subject/module
+- description (String, required): Document description
+- university (String, required): Associated university
+- category (String, required): Document category
+- academicYear (String, required): Academic year
+
+Supported File Types:
+PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, JPEG, PNG
+Max Size: 10 MB
+
+Processing Steps:
+- Validate request and files
+- Verify JWT and user role
+- Convert file to PDF if needed
+- Merge with licensing PDF
+- Generate preview images
+- Optimize previews
+- Upload files to cloud storage
+- Save metadata in database
+- Mark document as pending
+
+Success Response (200):
+{
+ "status": "success",
+ "message": "Document uploaded and marked as pending",
+ "documentId": 123,
+ "previewImageUrl": "url",
+ "lightPreviewUrl": "url1,url2"
+}
+
+Error Responses:
+400 - Missing files / invalid request
+401 - Unauthorized / invalid token
+403 - Permission denied
+500 - Server error
+
+Example Request (curl):
+curl -X POST http://localhost:3000/api/upload \
+-H "Authorization: Bearer YOUR_TOKEN" \
+-F "files=@document.docx" \
+-F "title=Lecture Notes Week 1" \
+-F "module=Software Engineering" \
+-F "description=Intro notes" \
+-F "university=ABC University" \
+-F "category=Lecture Notes" \
+-F "academicYear=2024"
+
+Example Response:
+{
+ "status": "success",
+ "message": "Document uploaded and marked as pending",
+ "documentId": 45
+}
+
+PROMPT 2 – OPENAPI (SWAGGER) FORMAT
+
+openapi: 3.0.0
+info:
+ title: Document Upload API
+ version: 1.0.0
+
+paths:
+/api/upload:
+ post:
+  summary: Upload document
+  description: Upload, convert to PDF, generate previews, store metadata
+  security:
+   - bearerAuth: []
+  requestBody:
+   required: true
+   content:
+    multipart/form-data:
+     schema:
+      type: object
+      required:
+       - files
+       - title
+       - module
+       - description
+       - university
+       - category
+       - academicYear
+      properties:
+       files:
+        type: string
+        format: binary
+       title:
+        type: string
+       module:
+        type: string
+       description:
+        type: string
+       university:
+        type: string
+       category:
+        type: string
+       academicYear:
+        type: string
+  responses:
+   "200":
+    description: Upload successful
+   "400":
+    description: Invalid request
+   "401":
+    description: Unauthorized
+   "403":
+    description: Permission denied
+   "500":
+    description: Server error
+
+PROMPT 3 – DEVELOPER USAGE GUIDE
+
+Authentication
+Include JWT token in header:
+Authorization: Bearer YOUR_TOKEN
+
+Request Format
+Use multipart/form-data and include file + all required fields.
+
+Example (Axios):
+const formData = new FormData();
+formData.append("files", file);
+formData.append("title", "Lecture Notes");
+formData.append("module", "Software Engineering");
+formData.append("description", "Week 1 intro");
+formData.append("university", "ABC University");
+formData.append("category", "Lecture Notes");
+formData.append("academicYear", "2024");
+
+axios.post("/api/upload", formData, {
+ headers: {
+  Authorization: "Bearer YOUR_TOKEN",
+  "Content-Type": "multipart/form-data"
+ }
+});
+
+Handling Responses
+On success:
+- documentId
+- previewImageUrl
+- lightPreviewUrl
+
+Common Errors:
+- Invalid token → check Authorization header
+- Missing fields → include all required params
+- File too large → max 10MB
+- Unsupported file type → use allowed formats
+
+Reflection – What I Learned
+
+AI helps generate structured API documentation quickly. The main challenge was clearly defining parameters and responses. The output required review to ensure accuracy.
+
+I also learned how to convert documentation into OpenAPI format, which can be used with tools like Swagger UI.
+
+AI improves speed and consistency, but validation is necessary to ensure correctness.
+```
