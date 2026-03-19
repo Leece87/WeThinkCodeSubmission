@@ -1,0 +1,98 @@
+```
+Task Manager Code Documentation Exercise
+
+Original Code
+
+def init(self, title, description="", priority=TaskPriority.MEDIUM, due_date=None, tags=None):
+ self.id = str(uuid.uuid4())
+ self.title = title
+ self.description = description
+ self.priority = priority
+ self.status = TaskStatus.TODO
+ self.created_at = datetime.now()
+ self.updated_at = self.created_at
+ self.due_date = due_date
+ self.completed_at = None
+ self.tags = tags or []
+
+Documentation Generated Using Prompt 1 (Comprehensive Function Documentation)
+
+This constructor initializes a new Task object with all required attributes used by the Task Manager system.
+
+Description:
+The function creates a new task and assigns it a unique identifier using UUID. It stores the task title, description, priority, and optional due date. When a task is created, its status is automatically set to TODO. The constructor also records timestamps for when the task was created and last updated. If no tags are provided, an empty list is initialized.
+
+Parameters:
+- title (str): The name of the task.
+- description (str, optional): Detailed explanation. Default is empty.
+- priority (TaskPriority, optional): LOW, MEDIUM, HIGH. Default is MEDIUM.
+- due_date (datetime, optional): Task deadline. Default is None.
+- tags (list, optional): Labels for categorization. Defaults to empty list.
+
+Return Value:
+No return value. Initializes a Task object.
+
+Possible Errors:
+Type errors if incorrect data types are passed.
+
+Example Usage:
+task = Task(
+ title="Finish assignment",
+ description="Complete documentation",
+ priority=TaskPriority.HIGH,
+ tags=["school", "python"]
+)
+
+Notes:
+"tags or []" ensures a new list is created if tags is None.
+
+Insights Using Prompt 2 (Intent and Logic Explanation)
+
+High-Level Purpose:
+Initializes a Task object with identifiers, metadata, and timestamps.
+
+Step-by-Step Logic:
+- Generate a unique ID using UUID.
+- Store title and description.
+- Assign priority (default MEDIUM).
+- Set status to TODO.
+- Record creation time.
+- Set updated_at equal to created_at.
+- Store optional due date.
+- Set completed_at to None.
+- Ensure tags is always a list.
+
+Assumptions and Edge Cases:
+- Title should be a non-empty string.
+- Tags should be a list of strings.
+- due_date should be a valid datetime.
+- "tags or []" prevents mutable default issues.
+
+Suggested Inline Comments:
+- Generate unique ID
+- Store task data
+- Set priority and status
+- Record timestamps
+- Store due date
+- Initialize completion state
+- Ensure tags list
+
+Possible Improvements:
+- Validate title is not empty
+- Validate tag types
+- Validate due_date type
+- Add limits to title/description length
+
+Final Combined Documentation Version
+
+This constructor creates and initializes a Task object. Each task has a unique ID and includes title, description, priority, due date, and tags.
+
+New tasks are set to TODO status. The created_at timestamp is recorded, updated_at is initialized to the same value, and completed_at is None until completion.
+
+Tags are always stored as a list. If none are provided, an empty list is created to avoid shared mutable defaults.
+
+Example:
+task = Task("Write documentation", tags=["coding", "python"])
+
+The object can then be managed for updates, completion tracking, and storage.
+```
